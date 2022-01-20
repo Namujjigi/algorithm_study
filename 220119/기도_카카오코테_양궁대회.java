@@ -44,19 +44,6 @@ class Solution {
 				copy(point);
 				
 			}
-			else if(max == sum-apeach && sum-apeach!=0)
-			{
-				for(int i=10;i>=0;i--)
-				{
-					if(point[i]>result[i])
-					{
-						copy(point);
-						break;
-					}
-			else if(point[i]<result[i])
-						break;
-				}
-			}
 			return;
 		}
 		
