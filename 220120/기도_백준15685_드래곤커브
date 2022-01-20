@@ -1,0 +1,95 @@
+package BaekJun;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class DragonCurve {
+	static int[] dy = {0,-1,0,1};
+	static int[] dx = {1,0,-1,0};
+	static ArrayList<int[]> point;
+	static boolean[][] visit;
+	static int result=0;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		point = new ArrayList();
+		visit = new boolean[1001][1001];
+		for(int i=0;i<N;i++)
+		{
+			String[] s = br.readLine().split(" ");
+			int x = Integer.parseInt(s[0]);
+			int y = Integer.parseInt(s[1]);
+			int d = Integer.parseInt(s[2]);
+			int g = Integer.parseInt(s[3]);
+			ArrayList<int[]> xy = new ArrayList();
+			xy.add(new int[] {x,y});
+			xy.add(new int[] {x+dx[d],y+dy[d]});
+
+			makeCurve(x,y,d,g,xy);
+			
+		}
+		for(int i=0;i<1001;i++)
+		{
+			for(int j=0;j<1001;j++)
+			{
+				if(visit[i][j])
+					check(i,j);
+			}			
+		}
+		System.out.println(result);
+	}
+	private static void check(int x,int y) {
+		int cnt=0;
+		
+		if(visit[x+1][y])
+			cnt++;
+		if(visit[x][y+1])
+			cnt++;
+		if(visit[x+1][y+1])
+			cnt++;
+		if(cnt==3)
+			result++;
+		return;
+	}
+	private static void makeCurve(int x, int y, int d, int g, ArrayList<int[]> xy) {
+		int count=0;
+		while(count<g)
+		{
+			int Size = xy.size();
+			for(int i=Size-1;i>0;i--)
+			{
+				int ax = xy.get(xy.size()-1)[0];
+				int ay = xy.get(xy.size()-1)[1];
+				int x1 = xy.get(i)[0];
+				int y1 = xy.get(i)[1];
+				int x2 = xy.get(i-1)[0];
+				int y2 = xy.get(i-1)[1];
+				if(x1==x2)
+				{
+					int x_diff = x1-x2;
+					int y_diff = y1-y2;
+					xy.add(new int[] {ax+y_diff,ay+x_diff});					
+				}
+				else if(y1==y2)
+				{
+					int x_diff = x2-x1;
+					int y_diff = y2-y1;
+					xy.add(new int[] {ax+y_diff,ay+x_diff});					
+				}
+			}
+			count++;
+		}
+
+		for(int i=0;i<xy.size();i++)
+		{
+			int ax = xy.get(i)[0];
+			int ay = xy.get(i)[1];
+			point.add(xy.get(i));
+			visit[500+ay][500+ax] = true;
+		}
+	}
+
+}
