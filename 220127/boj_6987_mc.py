@@ -9,13 +9,13 @@ def make_match(start, cnt):
         pick.pop()
 
 def match_result(idx):
-    global re
+    global answer
     if idx == 15:
-        re += 1
-        for k in range(0, 18, 3):
-            print(match_result_lst[k:k+3], end='\n')
-        print()
-        print(re)
+        if not sum(match):
+            answer = 1
+        else:
+            answer = 0
+            return
         return
 
     # 0, 1, 2/ 승 무 패
@@ -24,19 +24,22 @@ def match_result(idx):
     for i in range(3):
         team1_result = i
         team2_result = 2 - i
-        match_result_lst[team1 * 3 + team1_result] += 1
-        match_result_lst[team2 * 3 + team2_result] += 1
-        match_result(idx + 1)
-        match_result_lst[team1 * 3 + team1_result] -= 1
-        match_result_lst[team2 * 3 + team2_result] -= 1
+        if match[team1 * 3 + team1_result] > 0 and match[team2 * 3 + team2_result] > 0:
+            match[team1 * 3 + team1_result] -= 1
+            match[team2 * 3 + team2_result] -= 1
+            match_result(idx + 1)
+            match[team1 * 3 + team1_result] += 1
+            match[team2 * 3 + team2_result] += 1
 
 
 pick = []
 match_lst = []
-match_result_lst = [0 for _ in range(18)]
-re = 0
 make_match(-1, 0)
-for ma in match_lst:
-    print(ma, end='\n')
-print()
-match_result(0)
+ans_lst = []
+for _ in range(4):
+    match = list(map(int, input().split()))
+    answer = 0
+    match_result(0)
+    ans_lst.append(answer)
+
+print(*ans_lst)
