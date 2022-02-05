@@ -1,22 +1,20 @@
-def bubble_sort():
-    flag_cnt = 0
-    result = []
-    for i in range(A - 1, 0, -1):
-        for j in range(i):
-            if numbers[j] > numbers[j + 1]:
-                numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
-                flag_cnt += 1
-                if flag_cnt == K:
-                    result = [numbers[j], numbers[i]]
-                    return result
-
-    return result
+import sys
+input = sys.stdin.readline
 
 A, K = map(int, input().split())
 numbers = list(map(int, input().split()))
 
-answer = bubble_sort()
-if answer:
-    print(*answer)
+result = []
+cnt = 0
+for i in range(A):
+    for j in range(A - i - 1):
+        if numbers[j] > numbers[j + 1]:
+            cnt += 1
+            numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
+            if cnt == K:
+                result = [numbers[j], numbers[j + 1]]
+
+if result:
+    print(*result)
 else:
     print(-1)
